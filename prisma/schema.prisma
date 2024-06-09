@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Journal {
+  id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  year  String
+  title Title[]
+}
+
+model Title {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  desc      String
+  DOI       String?
+  Journal   Journal? @relation(fields: [journalId], references: [id])
+  journalId String?  @db.ObjectId
+}
+
+model Conference {
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  name     String
+  link     String
+  scholars String
+}
+
+model Patents {
+  id   String  @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  link String?
+}
+
+model Books {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  writers   String[]
+  name      String
+  publisher String?
+  ISBN      String?
+  DOR       String?
+  DOI       String?
+  chapters  Chapter[]
+}
+
+model Chapter {
+  id      String  @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  Books   Books?  @relation(fields: [booksId], references: [id])
+  booksId String? @db.ObjectId
+}
+
+model Projects {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  holder String //eg:the person name
+  title  String //eg: Project title
+  year   String //eg:2021-22
+  venue  String //eg:ECE Dept. NIT Silchar
+  role   String? //eg: Supervisor
+  type   String //btech or mtech
+}
+
+model Thesis {
+  id     String  @id @default(auto()) @map("_id") @db.ObjectId
+  holder String //the person name
+  status String //ongoing or guided
+  topic  String //project topic
+  regId  String //phd registration id
+  role   String? //eg: Supervisor
+}
+
+model IEEE {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  year        String
+  designation String
+  location    String
+}
+
+model Gallery {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  photo String
+}
+
+model Editorial {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+}
+
+model Memberships {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+}
+
+model Sponsored {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  investigator  String
+  foreignCollab String?
+  projectTitle  String
+  type          String
+  agency        String
+  fund          String
+}
+
+model Awards {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  year         String
+  name         String
+  organisation String
+}
+
+model Talks {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  year        String
+  description String // everything including topics,organising commitees and all
+}
+
+model Collaborations {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  professor   String
+  affiliation String
+  nature      String
+}
