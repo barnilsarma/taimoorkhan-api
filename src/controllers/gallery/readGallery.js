@@ -2,7 +2,7 @@ import prisma from "../../../prisma/index.js";
 
 const readGallery = async (req, res) => {
     try {
-        const read = prisma.gallery.findMany();
+        const read = await prisma.gallery.findMany();
         res.status(200).send({ data: read });
     }
     catch (err) {

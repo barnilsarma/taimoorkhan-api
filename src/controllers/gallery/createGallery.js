@@ -2,7 +2,7 @@ import prisma from "../../../prisma/index.js";
 
 const createGallery = async (req, res) => {
     try {
-        const cre = prisma.gallery.create({
+        const cre = await prisma.gallery.create({
             data: {
                 photo: req.body.photo
             }
