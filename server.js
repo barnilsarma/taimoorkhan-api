@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import createJournal from "./src/controllers/journal/createJournal.js";
 import createTitle from "./src/controllers/title/createTitle.js";
 import readJournal from "./src/controllers/journal/readJournal.js";
@@ -66,6 +67,7 @@ import deleteCollab from "./src/controllers/collaborations/deleteCollab.js";
 
 const app = new express();
 app.use(express.json());
+app.use(cors());
 //
 app.post('/journal/add', createJournal);
 app.get('/journal/read', readJournal);
