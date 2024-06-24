@@ -5,6 +5,7 @@ const createJournal = async (req, res) => {
         const data = await prisma.journal.create({
             data: {
                 year: req.body.year
+                
             }
         });
         res.status(200).send("Done");

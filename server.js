@@ -1,4 +1,7 @@
 import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 import createJournal from "./src/controllers/journal/createJournal.js";
 import createTitle from "./src/controllers/title/createTitle.js";
 import readJournal from "./src/controllers/journal/readJournal.js";
@@ -66,7 +69,14 @@ import deleteCollab from "./src/controllers/collaborations/deleteCollab.js";
 
 const app = new express();
 app.use(express.json());
-//
+
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => console.log('Database connected'))
+  .catch(err => console.log(err));
+
+//routes
 app.post('/journal/add', createJournal);
 app.get('/journal/read', readJournal);
 app.put('/journal/update/:id', updateJournal);
@@ -147,6 +157,7 @@ app.get('/sponsored/read', readSponsor);
 app.put('/sponsored/update/:id', updateSponsor);
 app.put('/sponsored/delete/:id', deleteSponsor);
 
-app.listen(3000, () => {
-    console.log("Server running at port 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Server running at port ${port}`);
 });
